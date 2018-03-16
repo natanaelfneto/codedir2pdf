@@ -4,6 +4,7 @@ import os, sys, getopt
 from codelib import *
 from loopfolder import *
 from get_codeignore import *
+from pdf_location import *
 from print_output import *
 
 __version__ = "0.0.2"
@@ -84,6 +85,15 @@ class CodeFolder2Pdf(object):
                     self.verbose, 
                     )
                 filteredfiles.convert()
+
+                pdf = SetPdfLocation(
+                    self.ignoredlist,
+                    self.inputfolder,
+                    self.verbose,
+                )
+
+                pdf.filter()
+
             elif opt == '-v':
                 print 'version 0.0.1'
                 sys.exit()
