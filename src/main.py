@@ -7,7 +7,7 @@ from get_codeignore import *
 from pdf_location import *
 from print_output import *
 
-__version__ = "0.0.2"
+__version__ = "0.0.3"
 
 
 class File2Pdf(object):
