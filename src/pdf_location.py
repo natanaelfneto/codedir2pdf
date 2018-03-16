@@ -26,20 +26,22 @@ class SetPdfLocation(object):
         for root, dirs, files in os.walk(self.folder, topdown=True):
             dirs[:] = [d for d in dirs if d not in self.ignoredlist[0]]
             for f in files:
-                echo.output('> checking file: '+f+' ...')
-                name, extension = os.path.splitext(str(f))
-                echo.output('> filtering only PDF file ...') 
-                if str(extension) == '.pdf':
-                    echo.output('> pdf file origin '+os.path.abspath(f)+' ...')
-                    echo.output('> checking file status ...')
-                    if os.path.isfile(os.path.abspath(f)):
-                        echo.output('> pdf destination '+os.path.join(self.pdf_folder, f)+' ...')
-                        echo.output('> moving pdf file from origin to destination ...')
-                        move(os.path.abspath(f),os.path.join(self.pdf_folder, f))
+                f_path = (os.path.join(root,f))
+                if os.path.isfile(f_path):
+                    echo.output('> checking file: '+f_path+' ...')
+                    name, extension = os.path.splitext(str(f_path))
+                    echo.output('> filtering only PDF file ...') 
+                    if str(extension) == '.pdf':
+                        echo.output('> pdf file origin '+os.path.abspath(f_path)+' ...')
+                        echo.output('> checking file status ...')
+                        if os.path.isfile(os.path.abspath(f_path)):
+                            echo.output('> pdf destination '+os.path.join(self.pdf_folder, f)+' ...')
+                            echo.output('> moving pdf file from origin to destination ...')
+                            move(os.path.abspath(f_path),os.path.join(self.pdf_folder, f))
+                        else:
+                            echo.output('> skipping non-file...')
                     else:
-                        echo.output('> skipping non-file...')
-                else:
-                    echo.output('> skipping non-pdf-file...')
+                        echo.output('> skipping non-pdf-file...')
             echo.output('> finished moving all pdf files to '+self.pdf_folder+' ...')
         
     def __del__(self):

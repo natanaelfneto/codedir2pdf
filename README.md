@@ -5,7 +5,7 @@
 </p>
 
 This **Code Folder to PDF Module** was based on the requirements for software author registry in Brazil:\
-Version: **0.0.3**
+Version: **0.0.4**
 ***
 # Table of Contents
 * [Getting Started](#getting-started)
@@ -36,6 +36,7 @@ _this messagem can also be found with_ **python ./codefolder2pdf/src/main.py -h*
 ```ShellSession
 CodeFolder2PDF
 usage: pyhton code2pdf.py -[ opt ] [<inputfolder>]
+-c                  Search all pdf formated files and move then to pdf ouput folder.
 -h                  Output this help message.
 -i  <inputfolder>   Get all files in directory and its sub directories and convert to PDF.
 -v                  Output the current module version.

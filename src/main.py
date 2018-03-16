@@ -7,7 +7,7 @@ from get_codeignore import *
 from pdf_location import *
 from print_output import *
 
-__version__ = "0.0.3"
+__version__ = "0.0.4"
 
 
 class File2Pdf(object):
@@ -54,20 +54,37 @@ class CodeFolder2Pdf(object):
     def main(self):
         self.error_message = "invalid arguments were passed ..."
         self.help_message = "CodeFolder2PDF\nusage: pyhton code2pdf.py -[ opt ] [<inputfolder>]\n\n\
+    -c                  Search all pdf formated files and\n\
+                         move then to pdf ouput folder.\n\
     -h                  Output this help message.\n\
-    -i  <inputfolder>   Get all files in directory and its sub directories and convert to PDF.\n\
+    -i  <inputfolder>   Get all files in directory and\n\
+                         its sub directories and convert to PDF.\n\
     -v                  Output the current module version.\n\
     -V                  Set verbose flag to True.\n"
         self.inputfolder = ''
         self.outputfile = ''
         self.verbose = False
         try:
-            opts, args = getopt.getopt(self.__argv,"hi:vV")
+            opts, args = getopt.getopt(self.__argv,"c:hi:vV")
         except getopt.GetoptError:
             print(self.error_message)
             print(self.help_message)
             sys.exit()
         for opt, arg in opts:
+            if opt == '-c':
+                self.inputfolder = arg
+                loop = LoopThroughFolders(
+                    self.inputfolder,
+                    self.verbose, 
+                    self.help_message
+                    )
+                self.ignoredlist = loop.folders()
+                pdf = SetPdfLocation(
+                    self.ignoredlist,
+                    self.inputfolder,
+                    self.verbose,
+                )
+                pdf.filter()
             if opt == '-h':
                 print(self.help_message)
                 sys.exit()

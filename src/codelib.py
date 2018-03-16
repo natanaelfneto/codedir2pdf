@@ -22,7 +22,10 @@ class Code2Pdf(object):
         echo.output('> using: '+str(os.path.abspath(self.__input_file)))
         with open(self.__input_file) as f:
             echo.output('> reading file content ...')
-            content = f.read()
+            try:
+                content = f.read()
+            except:
+                pass
         echo.output('> trying to import lexer and formatter for file type ...')
         try:
             lexer = get_lexer_for_filename(self.__input_file)
@@ -39,9 +42,9 @@ class Code2Pdf(object):
             echo.output('> using pisa library to convert: '+str(out))
             try:
                 pdf = pisa.CreatePDF(content, dest=out)
+                return pdf.err
             except:
                 pass
-        return pdf.err
         echo.output('> content is now save as pdf')
 
     def __del__(self):
