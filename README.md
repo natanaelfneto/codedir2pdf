@@ -21,6 +21,10 @@ _clone or download the repository at_
 ```Shell
 git clone https://github.com/natanaelfneto/codefolder2pdf.git;
 ```
+_import dependencies_ 
+```
+pip install -r requirements.txt
+```
 _run the command as examplified:
 ```Shell
 python ./codefolder2pdf/src/main.py -i <path/to/project/root/>
