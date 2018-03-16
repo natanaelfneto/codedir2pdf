@@ -31,7 +31,11 @@ _enjoy_
 _this messagem can also be found with_ **python ./codefolder2pdf/src/main.py -h** _command_
 ```ShellSession
 CodeFolder2PDF
-usage: pyhton code2pdf.py -[ opt ] [<inputfolder>]                                                            -h                  Output this help message.                                                                 -i  <inputfolder>   Get all files in directory and its sub directories and convert to PDF.                    -v                  Output the current module version.                                                        -V                  Set verbose flag to True.                                                        
+usage: pyhton code2pdf.py -[ opt ] [<inputfolder>]
+-h                  Output this help message.
+-i  <inputfolder>   Get all files in directory and its sub directories and convert to PDF.
+-v                  Output the current module version.
+-V                  Set verbose flag to True.
 ```
 ## License
 MIT License
