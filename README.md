@@ -1,6 +1,6 @@
 <p align="left">
   <a href="#">
-    <img alt="script-logo" src="" width="240"/>
+    <img alt="code-folder-to-pdf-python-script-logo" src="https://raw.githubusercontent.com/natanaelfneto/codeFolder2pdf/master/src/img/codefolder2pdf.png" width="240"/>
   </a>
 </p>
 
