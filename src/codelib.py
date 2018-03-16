@@ -3,11 +3,12 @@ import sys
 
 from pygments.lexers import get_lexer_for_filename
 from pygments.formatters.html import HtmlFormatter
-from pygments import highlight
+from pygments import highlight, styles
 
 from xhtml2pdf import pisa
 
 from main import *
+from print_output import *
 
 
 class Code2Pdf(object):
@@ -16,26 +17,29 @@ class Code2Pdf(object):
         self.__output_file = input_file + '.pdf'
         self.verbose = verbose
 
-    def highlight_file(self, linenos):
-        echo = PrintVerbose(self.verbose)
-        lexer = get_lexer_for_filename(self.__input_file)
-        formatter = HtmlFormatter(noclasses=True, linenos=linenos)
-        try:
-            with open(self.__input_file, 'r') as f:
-                content = f.read()
-        except IOError as exc:
-            echo.output(exc.message)
-
-        return highlight('', lexer, formatter)
-
     def init_print(self, linenos=False):
+        echo = PrintVerbose(self.verbose)
+        echo.output('> using: '+str(os.path.abspath(self.__input_file)))
+        with open(self.__input_file) as f:
+            echo.output('> reading file content ...')
+            content = f.read()
+        echo.output('> trying to import lexer and formatter for file type ...')
         try:
-            content = self.highlight_file(linenos=linenos)
-            with open(self.__output_file, "w+b") as out:
-                pdf = pisa.CreatePDF(content, dest=out)
-            return pdf.err
-        except IOError as exc:
-            echo.output(exc.message)
+            lexer = get_lexer_for_filename(self.__input_file)
+            echo.output('> lexer import done')
+            formatter = HtmlFormatter(noclasses=True, linenos=linenos)
+            echo.output('> formatter done')
+            content = highlight('', lexer, formatter)
+            echo.output('> content updated with lexer and formatter')
+        except:
+            echo.output('> content update could not happen')
+            pass
+        echo.output('> stating to write output as pdf content ...')
+        with open(self.__output_file, "w+b") as out:
+            echo.output('> using pisa library to convert: '+str(out))
+            pdf = pisa.CreatePDF(content, dest=out)
+        return pdf.err
+        echo.output('> content is now save as pdf')
 
     def __del__(self):
         echo = PrintVerbose(self.verbose)

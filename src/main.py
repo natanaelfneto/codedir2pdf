@@ -35,10 +35,10 @@ class File2Pdf(object):
         echo.output('> looping through root, directories and files content ...')
         for root, dirs, files in os.walk(self.folder, topdown=True):
             dirs[:] = [d for d in dirs if d not in self.exclude[0]]
-            echo.output('> ignoring sub directories in .codeignore file ...')
             for f in files:
-                echo.output('> file: '+f)
-                self.files2pdf(f)
+                echo.output('> ignoring sub directories in .codeignore file ...')
+                if os.path.isfile((os.path.join(root,f))):
+                    self.files2pdf((os.path.join(root,f)))
             echo.output('> CodeFolder2PDF is almost finished ...')
         echo.output('> CodeFolder2PDF is finished ...')
         
@@ -73,6 +73,7 @@ class CodeFolder2Pdf(object):
                 sys.exit()
             elif opt == '-i':
                 self.inputfolder = arg
+                print(self.inputfolder)
                 loop = LoopThroughFolders(
                     self.inputfolder,
                     self.verbose, 
@@ -95,10 +96,13 @@ class CodeFolder2Pdf(object):
                 pdf.filter()
 
             elif opt == '-v':
-                print 'version 0.0.1'
+                print('version 0.0.1')
                 sys.exit()
             elif opt == '-V':
                 self.verbose = True
+        
+    def __del__(self):
+        print('> Clone Folder to PDF is done')
 
 
 if __name__ == "__main__":
