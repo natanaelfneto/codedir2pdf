@@ -86,15 +86,12 @@ class CodeFolder2Pdf(object):
                     self.verbose, 
                     )
                 filteredfiles.convert()
-
                 pdf = SetPdfLocation(
                     self.ignoredlist,
                     self.inputfolder,
                     self.verbose,
                 )
-
                 pdf.filter()
-
             elif opt == '-v':
                 print('version 0.0.1')
                 sys.exit()

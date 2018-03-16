@@ -1,8 +1,13 @@
 #directories:
+__pycache__
+.idea
 .git
+.gradle
 
 #files:
+.bin
 .codeignore
 .gitignore
+.lock
 .pdf
 .pyc

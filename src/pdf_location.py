@@ -6,6 +6,7 @@ from shutil import *
 from get_codeignore import *
 from print_output import *
 
+
 class SetPdfLocation(object):
     def __init__(self, ignoredlist, inputfolder, verbose):
         self.ignoredlist = ignoredlist

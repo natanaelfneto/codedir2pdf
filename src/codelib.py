@@ -37,7 +37,10 @@ class Code2Pdf(object):
         echo.output('> stating to write output as pdf content ...')
         with open(self.__output_file, "w+b") as out:
             echo.output('> using pisa library to convert: '+str(out))
-            pdf = pisa.CreatePDF(content, dest=out)
+            try:
+                pdf = pisa.CreatePDF(content, dest=out)
+            except:
+                pass
         return pdf.err
         echo.output('> content is now save as pdf')
 
