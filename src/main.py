@@ -1,63 +1,54 @@
 #!/usr/bin/python
-import argparse
-
 import os, sys, getopt
 
-# from pathlib import Path
+from codelib import *
+from loopfolder import *
+from get_codeignore import *
+from print_output import *
 
-from code2pdf import *
+__version__ = "0.0.2"
 
-__version__ = "0.0.1"
+
+class File2Pdf(object):
+    def __init__(self, ignoredlist, inputfolder, verbose):
+        self.exclude = ignoredlist
+        self.folder = inputfolder
+        self.verbose = verbose
+
+    def files2pdf(self, filename):
+        echo = PrintVerbose(self.verbose)
+        echo.output('> separating file extentions from file name ...')
+        name, extension = os.path.splitext(str(filename))
+        echo.output('> converting each file content found into PDF file ...') 
+        if str(extension) in self.exclude[1] or str(name) in self.exclude[1]:
+            echo.output('> ignoring PDF cnovertion of '+str(filename))
+        else:
+            code2pdf = Code2Pdf(str(filename), self.verbose)
+            echo.output('> converting '+str(filename)+' to PDF ...') 
+            code2pdf.init_print()
+            echo.output('> converting is almost finished ...')
+        echo.output('> converting'+str(filename)+' file into PDF file OK ...')
+
+    def convert(self):
+        echo = PrintVerbose(self.verbose)
+        echo.output('> looping through root, directories and files content ...')
+        for root, dirs, files in os.walk(self.folder, topdown=True):
+            dirs[:] = [d for d in dirs if d not in self.exclude[0]]
+            echo.output('> ignoring sub directories in .codeignore file ...')
+            for f in files:
+                echo.output('> file: '+f)
+                self.files2pdf(f)
+            echo.output('> CodeFolder2PDF is almost finished ...')
+        echo.output('> CodeFolder2PDF is finished ...')
+        
+    def __del__(self):
+        echo = PrintVerbose(self.verbose)
+        echo.output('> CodeFolder2PDF task memory cleaned')
 
 
 class CodeFolder2Pdf(object):
     def __init__(self, argv):
         self.__argv = argv
-    
-    # def convert_files(self):
-
-
-    def loop_inputfolder(self):
-        if self.verbose:
-            print '> checking input folder',self.inputfolder
-        if os.path.isdir(self.inputfolder):
-            if self.verbose:
-                print('> input name is a valid folder ...')
-                print('> lopping through files and sub directories ...')
-            for root, dirs, files in os.walk(self.inputfolder):
-                if self.verbose:
-                    print('> ignoring file formats in .codeignore ...')
-                for f in files:
-                    if self.verbose:
-                        print('> converting each file content found into PDF file ...')
-                    if f.endswith('.pyc'):
-                        if self.verbose:
-                            print(str(f)+' ignored')
-                    elif f.endswith('.pdf'):
-                        if self.verbose:
-                            print(str(f)+' ignored')
-                    elif f.endswith('.codeignore'):
-                        if self.verbose:
-                            print(str(f)+' ignored')
-                    elif f.endswith('.gitignore'):
-                        if self.verbose:
-                            print(str(f)+' ignored')
-                    else:
-                        if self.verbose:
-                            print('> converting'+str(f)+' file into PDF file ...')
-                        code2pdf = Code2Pdf(str(f))
-                        code2pdf.init_print()
-                        if self.verbose:
-                            print('> converting'+str(f)+' file into PDF file OK ...')
-                print('CodeFolder2PDF is done')
-        else:
-            print('error: the argument passed is not a valid directory')
-            if self.verbose:
-                print('> use . for local folder or /full/folder/path to diferent locations ...')
-                print(self.help_message)
-        if self.verbose:
-            print('> all founded files loop is finished ...')
-
 
     def main(self):
         self.error_message = "invalid arguments were passed ..."
@@ -74,19 +65,31 @@ class CodeFolder2Pdf(object):
         except getopt.GetoptError:
             print(self.error_message)
             print(self.help_message)
-            sys.exit(2)
+            sys.exit()
         for opt, arg in opts:
             if opt == '-h':
                 print(self.help_message)
                 sys.exit()
             elif opt == '-i':
                 self.inputfolder = arg
-                self.loop_inputfolder()
+                loop = LoopThroughFolders(
+                    self.inputfolder,
+                    self.verbose, 
+                    self.help_message
+                    )
+                self.ignoredlist = loop.folders()
+                filteredfiles = File2Pdf(
+                    self.ignoredlist,
+                    self.inputfolder,
+                    self.verbose, 
+                    )
+                filteredfiles.convert()
             elif opt == '-v':
                 print 'version 0.0.1'
                 sys.exit()
             elif opt == '-V':
                 self.verbose = True
+
 
 if __name__ == "__main__":
     c = CodeFolder2Pdf(sys.argv[1:])
