@@ -1,66 +1,32 @@
 <p align="left">
   <a href="#">
-    <img alt="code-folder-to-pdf-python-script-logo" src="https://raw.githubusercontent.com/natanaelfneto/codeFolder2pdf/master/src/img/codefolder2pdf.png" width="240"/>
+    <img 
+      alt="codedir2pdf-logo" 
+      src="https://raw.githubusercontent.com/natanaelfneto/codedir2pdf/master/assets/codedir2pdf-logo.png" 
+      width="240"/>
   </a>
 </p>
 
-This **Code Folder to PDF Module** was based on the requirements for software author registry in Brazil:\
-Version: **0.0.4**
-***
+**Code Folder to PDF**: 
+Version: **1..0**
+---
 # Table of Contents
 * [Getting Started](#getting-started)
     * [Installation process](#installation-process)
     * [Usage](#usage)
+    * [Examples](#examples)
 * [License](#license)
 ***
 ## Getting Started
-### Via Linux Bash or Windows Subsystem for Linux Bash
 #### Installation Process
-_installation is still under development, to make it work_
-_clone or download the repository at_
+```
+_use as terminal command:_
 ```Shell
-git clone https://github.com/natanaelfneto/codefolder2pdf.git;
-```
-_import dependencies_ 
-```
-pip install -r requirements.txt
-```
-_run the command as examplified:
-```Shell
-python ./codefolder2pdf/src/main.py -i <path/to/project/root/>
+git clone https://github.com/natanaelfneto/codedir2pdf.git
+python codedir2pdf -h
 ```
 _enjoy_
 ***
 ## Usage
-_this messagem can also be found with_ **python ./codefolder2pdf/src/main.py -h** _command_
+_this messagem can also be found with_ **python codedir2pdf.py -h** _command_
 ```ShellSession
-CodeFolder2PDF
-usage: pyhton code2pdf.py -[ opt ] [<inputfolder>]
--c                  Search all pdf formated files and move then to pdf ouput folder.
--h                  Output this help message.
--i  <inputfolder>   Get all files in directory and its sub directories and convert to PDF.
--v                  Output the current module version.
--V                  Set verbose flag to True.
-```
-## License
-MIT License
-
-Copyright (c) 2017 Natanael F. Neto (natanaelfneto)
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
