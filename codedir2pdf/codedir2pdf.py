@@ -35,6 +35,7 @@ import sys
 import time
 # third party imports
 from code2pdf import Code2pdf
+from code2pdf import main
 
 
 # 
