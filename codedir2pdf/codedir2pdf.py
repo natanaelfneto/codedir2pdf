@@ -34,8 +34,7 @@ import os
 import sys
 import time
 # third party imports
-from code2pdf import Code2pdf
-from code2pdf import main
+from codedir2pdf.code2pdf import Code2pdf
 
 
 # 
@@ -562,7 +561,12 @@ def run(debug=False, quiet=False, name=None, source=None):
         sys.exit()
 
 
+def main():
+    args(sys.argv[1:])
+
+
 # run function on command call
 if __name__ == "__main__":
-    args(sys.argv[1:])
+    main()
+
 # end of code

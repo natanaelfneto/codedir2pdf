@@ -43,7 +43,7 @@ class Code2pdf:
         self.input_file = ifile
         self.output_folder = output_folder
         self.relative_path = self.input_file.replace(self.source_folder, '')[1:]
-        self.pdf_file = "{}.pdf".format( os.path.join(self.output_folder, self.relative_path) .split('.')[0])
+        self.pdf_file = "{}.pdf".format( os.path.splitext(os.path.join(self.output_folder, self.relative_path))[0])
 
 
     def highlight_file(self, linenos=True, style='default'):
@@ -92,6 +92,11 @@ class Code2pdf:
         app = QApplication(sys.argv)  # noqa
         doc = QTextDocument()
         html = self.highlight_file(linenos=linenos, style=style)
+
+        # if not os.path.exists('teste.html'):
+        #     temp = open('teste.html', 'w')
+        #     temp.write(html)
+        #     temp.close()
 
         doc.setHtml(
             html
