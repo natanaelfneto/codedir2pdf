@@ -419,14 +419,14 @@ def file2pdf(source, filepath):
         filename = filename.split('.')[0]
 
     # 
-    output_folder = '{0}/{1}_pdf_source/'.format(source_name, source_dirname)
+    output_folder = os.path.join(os.path.dirname(source) ,os.path.basename(source_name)+"_pdfs")
 
     # 
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
 
     # 
-    size_file = 'A4'
+    size_file = 'A2'
 
     # 
     if len(filename.replace('.','')) > 0:
@@ -435,7 +435,7 @@ def file2pdf(source, filepath):
         output_file = pathlib.Path('{0}/{1}.pdf'.format(output_folder, filename.replace('.','')))
 
         # create the Code2pdf object
-        pdf = Code2pdf(input_file, output_file, size_file)
+        pdf = Code2pdf(input_file, output_file, size_file, source, output_folder)
 
         # call print method to print pdf
         pdf.init_print()
