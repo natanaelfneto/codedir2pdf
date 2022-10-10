@@ -1,10 +1,14 @@
 #! /usr/bin/env python
-from PyQt4.QtGui import QTextDocument, QPrinter, QApplication
+
 import argparse
 import logging
 import os
 import pathlib
 import sys
+
+from PyQt5.QtGui import QTextDocument
+from PyQt5.QtPrintSupport import QPrinter
+from PyQt5.QtWidgets import QApplication
 
 try:
     import pygments
@@ -18,10 +22,10 @@ __version__ = '1.0.0'
 
 
 def logger(func):
-    def log_wrap(self, ifile=None, ofile=None, size="A4"):
+    def log_wrap(self, ifile=None, ofile=None, size="A4", source_folder=None, output_folder=None):
         logging.getLogger().name = "code2pdf> "
         logging.getLogger().setLevel(logging.INFO)
-        func(self, ifile, ofile, size)
+        func(self, ifile, ofile, size, source_folder, output_folder)
     return log_wrap
 
 
@@ -31,12 +35,16 @@ class Code2pdf:
             Convert a source file into a pdf with syntax highlighting.
     """
     @logger
-    def __init__(self, ifile=None, ofile=None, size="A4"):
+    def __init__(self, ifile=None, ofile=None, size="A4", source_folder=None, output_folder=None):
+        self.source_folder = source_folder
         self.size = size
         if not ifile:
             raise Exception("input file is required")
         self.input_file = ifile
-        self.pdf_file = ofile or "{}.pdf".format(ifile.split('.')[0])
+        self.output_folder = output_folder
+        self.relative_path = self.input_file.replace(self.source_folder, '')[1:]
+        self.pdf_file = "{}.pdf".format( os.path.splitext(os.path.join(self.output_folder, self.relative_path))[0])
+
 
     def highlight_file(self, linenos=True, style='default'):
         """ Highlight the input file, and return HTML as a string. """
@@ -58,7 +66,7 @@ class Code2pdf:
 
         try:
             with open(self.input_file, 'rb') as f:
-                content = ''
+                content = "# " + self.relative_path +"\n\n"
                 for line in f:
                     try:
                         content += line.decode('utf-8')
@@ -83,19 +91,32 @@ class Code2pdf:
     def init_print(self, linenos=True, style="default"):
         app = QApplication(sys.argv)  # noqa
         doc = QTextDocument()
+        html = self.highlight_file(linenos=linenos, style=style)
+
+        # if not os.path.exists('teste.html'):
+        #     temp = open('teste.html', 'w')
+        #     temp.write(html)
+        #     temp.close()
+
         doc.setHtml(
-            self.highlight_file(linenos=linenos, style=style)
+            html
         )
         printer = QPrinter()
 
+        pdf_file = str(self.pdf_file)
         if os.path.sep != '/':
             pdf_file = self.pdf_file
             pdf_file = str(pdf_file).replace(os.path.sep, '/')
 
-        printer.setOutputFileName(pdf_file)
+        dir = os.path.dirname(self.pdf_file)
+        if not os.path.exists(dir):
+            os.makedirs(dir)
+
+        printer.setOutputFileName(self.pdf_file)
         printer.setOutputFormat(QPrinter.PdfFormat)
         page_size_dict = {"a2": QPrinter.A2, "a3": QPrinter.A3, "a4": QPrinter.A4, "letter": QPrinter.Letter}
-        printer.setPageSize(page_size_dict.get(self.size.lower(), QPrinter.A4))
+        printer.setPageSize(QPrinter.A2)
+        # printer.setResolution(1)
         printer.setPageMargins(15, 15, 15, 15, QPrinter.Millimeter)
         doc.print_(printer)
         logging.info("PDF created at %s" % (self.pdf_file))
